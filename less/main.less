@@ -1,0 +1,194 @@
+body {
+  color: #3d3d3d;
+  /* font-family: OSCB; */
+  font-size: 13pt;
+  margin: 0;
+  padding: 0;
+  background: rgb(250, 247, 247);
+}
+
+a:hover {
+  text-decoration: none;
+}
+button:focus,
+input:focus,
+a:focus,
+textarea:focus {
+  outline: none;
+}
+
+.container {
+  max-width: 1400px;
+}
+
+/* Оформление шапки */
+
+.logout {
+  text-align: right;
+
+  a {
+    color: #000;
+  }
+}
+
+h1 {
+  text-align: center;
+}
+
+/* Оформление Таблицы */
+
+table {
+  border-collapse: collapse;
+  text-align: center;
+  width: 100%;
+}
+
+table {
+  td,
+  th {
+    border: 1px solid #000;
+  }
+
+  margin-top: 1rem;
+}
+
+// Модальное окно
+.popup-add,
+.popup-select,
+.popup-change,
+.popup-spisat {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  z-index: 9;
+  background-color: rgba(0, 0, 0, 0.5);
+  &-subbtn {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  &-msg {
+    text-align: center;
+    margin-top: 1rem;
+    height: 10px;
+    .gifload {
+      margin: auto;
+      width: 50px;
+      height: 50px;
+      background: url(/assets/img/load.gif) center center no-repeat;
+      background-size: cover;
+    }
+  }
+}
+.popup-content {
+  position: fixed;
+  text-align: left;
+  left: 50%;
+  top: 10%;
+  background-color: #ffffff;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  padding: 4rem 6rem;
+
+  label {
+    width: 38%;
+    left: 50%;
+    text-align: left;
+  }
+}
+.popup-form {
+  margin-top: 3rem;
+  padding: 0;
+}
+.popup-close {
+  position: absolute;
+  top: -1.5rem;
+  right: -2rem;
+  width: 2rem;
+  border: none;
+  background-color: transparent;
+  font-size: 3rem;
+  color: #ffffff;
+}
+
+.popup-header {
+  font-family: "ProximaNova_bolt", sans-serif;
+  text-align: center;
+}
+
+.addform {
+  width: 500px;
+}
+
+.error {
+  border-bottom: 2px solid #ff4332;
+}
+.none,
+.col_id {
+  display: none;
+}
+
+input {
+  width: 60%;
+  border: unset;
+  border-bottom: 2px solid #e3e3e3;
+  outline: none;
+}
+
+.input-min {
+  width: 27%;
+  font-size: 12pt;
+}
+
+// цвет выбранной кнопки
+.select-color {
+  background-color: #e3a103;
+}
+.del {
+  display: inline-block;
+  width: 25%;
+}
+
+img {
+  vertical-align: top;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+table thead tr {
+  color: #ffffff;
+  font-weight: bold;
+  background: #00bf80;
+}
+table thead tr td {
+  border: 1px solid #01ab73;
+}
+table tbody tr td {
+  border: 1px solid #e8e9eb;
+}
+
+table tbody .red {
+  background: #eb59107a;
+}
+
+table tbody tr:hover {
+  background: #ebffe8;
+}
+table tbody td {
+  width: 10%;
+}
+.td-min {
+  width: 5%;
+}
+.td-max {
+  width: 15%;
+}
+
+table tbody .eloy {
+  background: #aff0378c;
+}
