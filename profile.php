@@ -16,7 +16,7 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "1") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Метрология</title>
+    <title>Радиостанции</title>
     <link rel="stylesheet" href="assets/css/bootstrap.css">
     <link rel="stylesheet" href="assets/css/main.css">
 
@@ -72,13 +72,13 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "1") {
                     <table id="tableexl">
                         <thead>
                             <tr>
+                                <th>Тип</th>
                                 <th>Наименование</th>
-                                <th>Тип,марка</th>
+                                <th>Модель</th>
                                 <th>Заводской номер</th>
-                                <th class="noExl">Паспорт</th>
-                                <th>год выпуска</th>
-                                <th>Дата поверки</th>
-                                <th>Дата следующей поверки</th>
+
+                                <th>Место установки</th>
+                                <th class="noExl">Фото</th>
 
 
                             </tr>
@@ -87,7 +87,7 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "1") {
                         <?php
 
                         if (empty($_SESSION['sql']['sql'])) {
-                            $sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_release`, `dev_data_pred_poverki`, `dev_data_poverki`, `dev_img` , `status`, `dev_akt_img` FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id";
+                            $sql = "SELECT DISTINCT `dev_id`,  `dev_type`,`dev_name`,`dev_marka`,`zav_num`, `location`, `img` FROM `device`, `users` WHERE users.id={$_SESSION['user']['id']} and users.id=device.distr_id";
                         } else {
                             $sql = $_SESSION['sql']['sql'];
                         }
@@ -95,44 +95,28 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "1") {
                         $devices = mysqli_fetch_all($devices);
                         foreach ($devices as $device) {
                             // getExtension  подключенная функция
-                            if (!empty($device[7]) && getExtension($device[7]) === "pdf") {
-                                $img = $device[7];
-                                $device[7] = '<a href="' . $img  . '" target="_blank"> <img src="assets\img\pdf.png" width="50" alt=""></a>';
-                            } elseif (!empty($device[7]) && (getExtension($device[7]) === "jpg" || getExtension($device[7]) === "png")) {
-                                $img = $device[7];
-                                $device[7] = '<a href="' . $device[7] . '" target="_blank"> <img src="assets\img\jpg.png" width="50" alt=""></a>';
+                            if (!empty($device[6]) && getExtension($device[6]) === "pdf") {
+                                $img = $device[6];
+                                $device[6] = '<a href="' . $img  . '" target="_blank"> <img src="assets\img\pdf.png" width="50" alt=""></a>';
+                            } elseif (!empty($device[6]) && (getExtension($device[6]) === "jpg" || getExtension($device[6]) === "png")) {
+                                $img = $device[6];
+                                $device[6] = '<a href="' . $device[6] . '" target="_blank"> <img src="assets\img\jpg.png" width="50" alt=""></a>';
                             } else $img = "1";
 
-
-
-                            if (date('Y-m-d') >= $device[6] && $device[8] == "1") {
-                                echo '<tr id="tbody" class="eloy">';
-                            } elseif (date('Y-m-d') >= $device[6]) {
-                                echo '<tr id="tbody" class="red">';
-                            } elseif ($device[8] == "1") {
-                                echo '<tr id="tbody" class="eloy">';
-                            } else {
-                                echo '<tr id="tbody">';
-                            }
 
                             echo '
 
                                 
-
+                            <tr id="tbody">
                                     
                                     <td style="cursor: pointer;">' . $device[1] . '</td>
                                     <td>' . $device[2] . '</td>
                                     <td>' . $device[3] . '</td>
-                                    <td class="noExl"> ' . $device[7] . '</td>
-                                    <td>' . $device[4] . '</td>
+                                    <td> ' . $device[4] . '</td>
                                     <td>' . $device[5] . '</td>
-                                    <td>' . $device[6] . '</td>
+                                    <td class="noExl">' . $device[6] . '</td>
                                     <td class="col_id noExl">' . $device[0] . '</td>
-                                    <td class="col_id noExl">' . $img . '</td>
-                                    <td class="col_id noExl">' . $device[8] . '</td>
-                                    <td class="col_id noExl">' . $device[9] . '</td>
-
-
+                                  
                                    </tr>
                                 ';
                         }
@@ -162,26 +146,24 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "1") {
                     <form class="addform">
 
                         <div>
+                            <label>Тип:</label> <input type="text" name="type" />
+                        </div>
+                        <div>
                             <label>Наименование:</label> <input type="text" name="name" />
                         </div>
                         <div>
-                            <label>Тип,марка:</label> <input type="text" name="marka" />
+                            <label>Модель:</label> <input type="text" name="marka" />
                         </div>
                         <div>
-                            <label>Заводской №:</label> <input type="text" name="zav_number" />
+                            <label>Заводской номер:</label> <input type="text" name="zav_number" />
                         </div>
                         <div>
-                            <label>Паспорт:</label> <input type="file" name="pasport" />
+                            <label>Место установки:</label> <input type="text" name="location1" />
                         </div>
                         <div>
-                            <label>Год выпуска:</label> <input type="date" name="dev_data_release" />
+                            <label>Фото:</label> <input type="file" name="img" />
                         </div>
-                        <div>
-                            <label>Дата поверки:</label> <input type="date" name="dev_data_pred_poverki" />
-                        </div>
-                        <div>
-                            <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki" />
-                        </div>
+
                         <div class="popup-add-subbtn">
                             <input type="submit" class="add-btn" value="Добавить" />
                         </div>

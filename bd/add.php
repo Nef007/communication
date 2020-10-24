@@ -3,19 +3,19 @@ session_start();
 require_once '../vendor/connect.php';
 
 //$dist_id_admin = $_POST['dist_id'];
+$type = $_POST['type'];
 $name = $_POST['name'];
 $marka = $_POST['marka'];
 $zav_number = $_POST['zav_number'];
-$dev_data_release = $_POST['dev_data_release'];
-$dev_data_pred_poverki = $_POST['dev_data_pred_poverki'];
-$dev_data_poverki = $_POST['dev_data_poverki'];
+$location1 = $_POST['location1'];
+
 //$distr_id = $_SESSION['user']['distr_id'];
-$pasport = $_FILES['pasport']['name'];
+$pasport = $_FILES['img']['name'];
 
 
 if ($_SESSION['user']['access'] === "0") {
-    $distr_id = $_SESSION['user']['distr_id'];
-} else $distr_id = $_POST['dist_id'];
+    $distr_id = $_SESSION['user']['id'];
+} else $distr_id = $_POST['id'];
 
 
 // $_SESSION['form_select'] = [
@@ -25,7 +25,7 @@ if ($_SESSION['user']['access'] === "0") {
 
 
 
-$check_zav_number = mysqli_query($connect, "SELECT * FROM `device` WHERE `dev_zav_number` = '$zav_number'");
+$check_zav_number = mysqli_query($connect, "SELECT * FROM `device` WHERE `zav_num` = '$zav_number'");
 if (mysqli_num_rows($check_zav_number) > 0) {
     $response = [
         "status" => false,
@@ -44,27 +44,25 @@ $error_fields = [];
 
 
 if ($name === '') {
-    $error_fields[] = 'name';
+    $error_fields[] = 'type';
 }
 
 if ($marka === '') {
-    $error_fields[] = 'marka';
+    $error_fields[] = 'name';
 }
 
 if ($zav_number === '') {
-    $error_fields[] = 'zav_number';
+    $error_fields[] = 'marka';
 }
 
 if ($dev_data_release === '') {
-    $error_fields[] = 'dev_data_release';
+    $error_fields[] = 'zav_number';
 }
 
 if ($dev_data_pred_poverki === '') {
-    $error_fields[] = 'dev_data_pred_poverki';
+    $error_fields[] = 'location1';
 }
-if ($dev_data_poverki === '') {
-    $error_fields[] = 'dev_data_poverki';
-}
+
 
 
 
@@ -81,16 +79,16 @@ if (!empty($error_fields)) {
     die();
 }
 
-$ext = pathinfo($_FILES['pasport']['name'], PATHINFO_EXTENSION);
+$ext = pathinfo($_FILES['img']['name'], PATHINFO_EXTENSION);
 
 
 
 
-if ($_FILES['pasport']) {
+if ($_FILES['img']) {
 
     if ($ext === "pdf" || $ext === "jpg" || $ext === "png") {
-        $path = 'uploads/' . time() . $_FILES['pasport']['name'];
-        if (!move_uploaded_file($_FILES['pasport']['tmp_name'], '../' . $path)) {
+        $path = 'uploads/' . time() . $_FILES['img']['name'];
+        if (!move_uploaded_file($_FILES['img']['tmp_name'], '../' . $path)) {
             $response = [
                 "status" => false,
                 "type" => 2,
@@ -99,8 +97,8 @@ if ($_FILES['pasport']) {
             echo json_encode($response);
         }
 
-        if (mysqli_query($connect, "INSERT INTO `device` (`id`, `dist_id`, `fif`, `dev_name`, `dev_marka`, `dev_zav_number`, `tex_o`, `prikaz`, `dev_data_release`, `dev_data_pred_poverki`,  `dev_data_poverki`, `dev_img`) 
-VALUES (NULL, '$distr_id', NULL, '$name', '$marka', '$zav_number', NULL, NULL, '$dev_data_release', '$dev_data_pred_poverki', '$dev_data_poverki', '$path')")) {
+        if (mysqli_query($connect, "INSERT INTO `device` (`dev_id`, `distr_id`,`dev_type`,`dev_name`,`dev_marka`,`zav_num`, `location`, `img`) 
+VALUES (NULL, '$distr_id', '$type', '$name', '$marka', '$zav_number', '$location1', '$path')")) {
 
 
 
@@ -132,8 +130,8 @@ VALUES (NULL, '$distr_id', NULL, '$name', '$marka', '$zav_number', NULL, NULL, '
     }
 } else {
 
-    if (mysqli_query($connect, "INSERT INTO `device` (`id`, `dist_id`, `fif`, `dev_name`, `dev_marka`, `dev_zav_number`, `tex_o`, `prikaz`, `dev_data_release`, `dev_data_pred_poverki`,  `dev_data_poverki`, `dev_img`) 
-VALUES (NULL, '$distr_id', NULL, '$name', '$marka', '$zav_number', NULL, NULL, '$dev_data_release', '$dev_data_pred_poverki', '$dev_data_poverki', NULL)")) {
+    if (mysqli_query($connect, "INSERT INTO `device` (`dev_id`, `distr_id`,`dev_type`,`dev_name`,`dev_marka`,`zav_num`, `location`, `img`) 
+    VALUES (NULL, '$distr_id', '$type', '$name', '$marka', '$zav_number', '$location1', NULL)")) {
 
 
 
@@ -146,7 +144,7 @@ VALUES (NULL, '$distr_id', NULL, '$name', '$marka', '$zav_number', NULL, NULL, '
         $response = [
             "status" => false,
             "type" => 2,
-            "message" => $distr_id . "fff",
+            "message" => $type,
         ];
         echo json_encode($response);
     }

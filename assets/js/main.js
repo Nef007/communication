@@ -40,10 +40,10 @@ $(".login-btn").click(function (e) {
     Получение аватарки с поля
  */
 
-let pasport = false;
+let img = false;
 
-$('input[name="pasport"]').change(function (e) {
-  pasport = e.target.files[0];
+$('input[name="img"]').change(function (e) {
+  img = e.target.files[0];
 });
 
 // функция гифки крутящейся
@@ -59,25 +59,23 @@ $(".add-btn").click(function (e) {
 
   $(`input`).removeClass("error");
 
-  let name = $('input[name="name"]').val(),
+  let type = $('input[name="type"]').val(),
+    name = $('input[name="name"]').val(),
     marka = $('input[name="marka"]').val(),
-    zav_number = $('input[name="zav_number"]').val(),
-    dev_data_release = $('input[name="dev_data_release"]').val();
-  dev_data_pred_poverki = $('input[name="dev_data_pred_poverki"]').val();
-  dev_data_poverki = $('input[name="dev_data_poverki"]').val();
+    zav_number = $('input[name="zav_number"]').val();
+  location1 = $('input[name="location1"]').val();
 
   let formData = new FormData();
 
+  formData.append("type", type);
   formData.append("name", name);
   formData.append("marka", marka);
   formData.append("zav_number", zav_number);
-  formData.append("pasport", pasport);
-  formData.append("dev_data_release", dev_data_release);
-  formData.append("dev_data_pred_poverki", dev_data_pred_poverki);
-  formData.append("dev_data_poverki", dev_data_poverki);
+  formData.append("location1", location1);
+  formData.append("img", img);
 
   $.ajax({
-    url: "bd/add.php",
+    url: "../../bd/add.php",
     type: "POST",
     dataType: "json",
     processData: false,

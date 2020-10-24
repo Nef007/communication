@@ -40,7 +40,7 @@ if (mysqli_num_rows($check_user) > 0) {
     $_SESSION['user'] = [
         // "id" => $user['user_id'],
         "distr" => $user['distr'],
-        "distr_id" => $user['distr_id'],
+        "id" => $user['id'],
         "access" => $user['access'],
 
     ];
