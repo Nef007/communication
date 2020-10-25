@@ -213,6 +213,8 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                             <label>Принадлежность:</label> <select name="dist_id">
                                 <?php
                                 foreach ($users as $userv) {
+
+                                    if ($userv[2] == "1") continue;
                                 ?>
                                     <option value=<?= $userv[0] ?>><?= $userv[1] ?></option>
                                 <?php

@@ -28,7 +28,7 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 ">
-                    <h1>Пользователи </h1>
+                    <h1>Статистика</h1>
                 </div>
             </div>
             <div class="row">
@@ -58,18 +58,98 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
 
 
 
+
+    <?php
+
+    // получение районов
+    $sql = "SELECT `distr` FROM `users` ";
+    $distrs = mysqli_query($connect,  $sql);
+    $distrs = mysqli_fetch_all($distrs);
+    //получение типов
+    $sql1 = "SELECT DiSTINCT `dev_type` FROM `device` ";
+    $types = mysqli_query($connect,  $sql1);
+    $types = mysqli_fetch_all($types);
+    $count_type = mysqli_num_rows(mysqli_query($connect,  $sql1));
+    // получение наименований
+    $sql2 = "SELECT DiSTINCT `dev_name` FROM `device` ";
+    $names = mysqli_query($connect,  $sql2);
+    $names  = mysqli_fetch_all($names);
+    $count_name = mysqli_num_rows(mysqli_query($connect,  $sql2));
+
+    $sql3 = "SELECT `dev_type` FROM `device`, `users` WHERE users.id=device.distr_id and `dev_type`='А' and users.distr='Чернянский район'"
+
+    ?>
+
+
+
+
+
     <section>
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 ">
 
-                    <table id="tableexl">
 
 
+                    <table class="stat" id="tableexl">
+                        <thead>
+                            <tr>
+
+                                <td>
+
+                                </td>
+
+
+                                <td colspan=<?= $count_type ?>>
+                                    Типы
+                                </td>
+                                <td colspan=<?= $count_name ?>>
+                                    Наименования
+                                </td>
+                                <td>
+                                    Итого
+                                </td>
+
+                            </tr>
+                        </thead>
 
                         <tr>
                             <td>
-                                Чернянский район
+
+                            </td>
+
+
+                            <?php
+                            foreach ($types as $type) {
+
+
+                            ?>
+
+                                <td>
+                                    <?= $type[0] ?>
+                                </td>
+
+                            <?php } ?>
+
+
+                            <?php
+                            foreach ($names as $name) {
+
+
+                            ?>
+
+                                <td>
+                                    <?= $name[0] ?>
+                                </td>
+
+                            <?php } ?>
+
+
+                            <td>
+                                <!-- сюда ставит код -->
+
+
+
                             </td>
 
 
@@ -79,22 +159,76 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
 
 
 
+                        <?php
 
+                        foreach ($distrs as $distr) {
+
+                            if ($distr[0] == "admin") continue;
+
+
+
+                        ?>
+
+                            <tr>
+                                <td>
+                                    <?= $distr[0] ?>
+                                </td>
+
+                                <?php foreach ($types as $type) {  ?>
+                                    <td>
+                                        <?php echo mysqli_num_rows(mysqli_query($connect,  "SELECT `dev_type` FROM `device`, `users` WHERE users.id=device.distr_id and `dev_type`='$type[0]' and users.distr='$distr[0]'")); ?>
+                                    </td>
+
+                                <?php } ?>
+
+                                <?php foreach ($names as $name) {  ?>
+                                    <td>
+                                        <?php echo mysqli_num_rows(mysqli_query($connect,  "SELECT `dev_name` FROM `device`, `users` WHERE users.id=device.distr_id and `dev_name`='$name[0]' and users.distr='$distr[0]'")); ?>
+                                    </td>
+
+                                <?php } ?>
+
+                                <td class="bol">
+                                    <?php echo mysqli_num_rows(mysqli_query($connect,  "SELECT `dev_name` FROM `device`, `users` WHERE users.id=device.distr_id  and users.distr='$distr[0]'")); ?>
+                                </td>
+
+
+
+                            </tr>
 
 
                         <?php
 
-
-                        $sql = "SELECT `first_name`,`last_name`,`patronymic`,`distr`,`login`,`password`,`access`, `id`  FROM `users` ";
-
-
-
-
-                        $users = mysqli_query($connect,  $sql);
-                        $users = mysqli_fetch_all($users);
-
+                        }
 
                         ?>
+
+
+
+                        <tr class="bol">
+                            <td>
+                                Итого:
+                            </td>
+                            <?php foreach ($types as $type) {  ?>
+                                <td>
+                                    <?php echo mysqli_num_rows(mysqli_query($connect,  "SELECT `dev_type` FROM `device`, `users` WHERE users.id=device.distr_id and `dev_type`='$type[0]'")); ?>
+                                </td>
+
+                            <?php } ?>
+
+                            <?php foreach ($names as $name) {  ?>
+                                <td>
+                                    <?php echo mysqli_num_rows(mysqli_query($connect,  "SELECT `dev_name` FROM `device`, `users` WHERE users.id=device.distr_id and `dev_name`='$name[0]' ")); ?>
+                                </td>
+
+                            <?php } ?>
+
+                            <td>
+                                <?php echo mysqli_num_rows(mysqli_query($connect,  "SELECT `dev_name` FROM `device`, `users` WHERE users.id=device.distr_id ")); ?>
+                            </td>
+
+
+                        </tr>
 
 
 
@@ -112,8 +246,9 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
 
 
     <!-- подключение jqweri -->
-    <script src="assets/js/jquery-3.5.1.min.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src=" assets/js/jquery-3.5.1.min.js"> </script>
+    <script src="assets/js/main.js">
+    </script>
     <script src="assets/js/jquery.table2excel.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <!-- <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script> -->
