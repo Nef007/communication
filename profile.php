@@ -103,11 +103,15 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "1") {
                                 $device[6] = '<a href="' . $device[6] . '" target="_blank"> <img src="assets\img\jpg.png" width="50" alt=""></a>';
                             } else $img = "1";
 
+                            if ($device[8] == "1") {
+                                echo '<tr id="tbody" class="eloy">';
+                            } else {
+                                echo '<tr id="tbody">';
+                            }
 
                             echo '
 
-                                
-                            <tr id="tbody">
+                    
                                     
                                     <td style="cursor: pointer;">' . $device[1] . '</td>
                                     <td>' . $device[2] . '</td>

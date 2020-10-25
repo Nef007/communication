@@ -19,10 +19,10 @@ if ($_SESSION['user'] && $_SESSION['user']['access'] == "1") {
 
 <body>
 
-    <!-- Форма авторизации -->
+
 
     <form>
-
+        <h1>Радиостанции</h1> <br> <br> <br>
         <label>Логин</label>
         <input type="text" name="login" placeholder="Введите свой логин">
         <label>Пароль</label>

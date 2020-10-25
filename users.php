@@ -32,9 +32,14 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-1 offset-lg-9 ">
+                <div class="col-lg-1 offset-lg-8 ">
                     <div class="logout">
                         <a href="admin.php">Главная</a>
+                    </div>
+                </div>
+                <div class="col-lg-1">
+                    <div class="logout">
+                        <a href="statistics.php">Статистика</a>
                     </div>
                 </div>
                 <div class="col-lg-1">
@@ -247,6 +252,8 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
 
                                 <option value="1">admin</option>
                                 <option value="0">user</option>
+
+                            </select>
                         </div>
                         <div class="popup-add-subbtn">
                             <input type="submit" class="change-btn-user" value="Сохранить" />
