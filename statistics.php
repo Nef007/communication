@@ -76,11 +76,22 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
     $names  = mysqli_fetch_all($names);
     $count_name = mysqli_num_rows(mysqli_query($connect,  $sql2));
 
-    $sql3 = "SELECT `dev_type` FROM `device`, `users` WHERE users.id=device.distr_id and `dev_type`='А' and users.distr='Чернянский район'"
 
     ?>
 
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 ">
 
+                    <button class="button loadexel">
+                        Выгрузить в Exel
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
 
 
 
@@ -224,7 +235,7 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                             <?php } ?>
 
                             <td>
-                                <?php echo mysqli_num_rows(mysqli_query($connect,  "SELECT `dev_name` FROM `device`, `users` WHERE users.id=device.distr_id ")); ?>
+                                Всего: <?php echo mysqli_num_rows(mysqli_query($connect,  "SELECT `dev_name` FROM `device`, `users` WHERE users.id=device.distr_id ")); ?>
                             </td>
 
 
