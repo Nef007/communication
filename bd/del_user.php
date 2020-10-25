@@ -6,7 +6,7 @@ $distr_id = $_POST['distr_id'];
 
 
 if (
-    mysqli_query($connect, "DELETE FROM `users` WHERE `users`.`distr_id` = '$distr_id'")
+    mysqli_query($connect, "DELETE FROM `users` WHERE `users`.`id` = '$distr_id'")
 
 ) {
 

@@ -2,30 +2,16 @@
 session_start();
 require_once '../vendor/connect.php';
 $dev_id = $_POST['dev_id'];
+$type = $_POST['type'];
 $name = $_POST['name'];
 $marka = $_POST['marka'];
+$img = $_POST['img'];
 $zav_number = $_POST['zav_number'];
-$dev_data_release = $_POST['dev_data_release'];
-$dev_data_pred_poverki = $_POST['dev_data_pred_poverki'];
-$dev_data_poverki = $_POST['dev_data_poverki'];
-$distr_id = $_SESSION['user']['distr_id'];
+$location3 = $_POST['location3'];
 
 
 
 
-
-// $check_zav_number = mysqli_query($connect, "SELECT * FROM `device` WHERE `dev_zav_number` = '$zav_number'");
-// if (mysqli_num_rows($check_zav_number) > 0) {
-//     $response = [
-//         "status" => false,
-//         "type" => 1,
-//         "message" => "Такой заводской номер уже существует",
-//         "fields" => ['zav_number']
-//     ];
-
-//     echo json_encode($response);
-//     die();
-// }
 
 
 
@@ -33,27 +19,25 @@ $error_fields = [];
 
 
 if ($name === '') {
-    $error_fields[] = 'name3';
+    $error_fields[] = 'type3';
 }
 
 if ($marka === '') {
-    $error_fields[] = 'marka3';
+    $error_fields[] = 'name3';
 }
 
 if ($zav_number === '') {
-    $error_fields[] = 'zav_number3';
+    $error_fields[] = 'marka3';
 }
 
 if ($dev_data_release === '') {
-    $error_fields[] = 'dev_data_release3';
+    $error_fields[] = 'zav_number3';
 }
 
 if ($dev_data_pred_poverki === '') {
-    $error_fields[] = 'dev_data_pred_poverki3';
+    $error_fields[] = 'location3';
 }
-if ($dev_data_poverki === '') {
-    $error_fields[] = 'dev_data_poverki3';
-}
+
 
 
 
@@ -72,27 +56,13 @@ if (!empty($error_fields)) {
 
 
 
+$ext = pathinfo($_FILES['img']['name'], PATHINFO_EXTENSION);
 
-
-
-// $path = 'uploads/' . time() . $_FILES['pasport']['name'];
-// if (!move_uploaded_file($_FILES['pasport']['tmp_name'], '../' . $path)) {
-//     $response = [
-//         "status" => false,
-//         "type" => 2,
-//         "message" => "Ошибка при загрузке аватарки",
-//     ];
-//     echo json_encode($response);
-// }
-
-// echo $_FILES['pasport'];
-$ext = pathinfo($_FILES['pasport']['name'], PATHINFO_EXTENSION);
-
-if ($_FILES['pasport']) {
+if ($_FILES['img']) {
 
     if ($ext === "pdf" || $ext === "jpg" || $ext === "png") {
-        $path = 'uploads/' . time() . $_FILES['pasport']['name'];
-        if (!move_uploaded_file($_FILES['pasport']['tmp_name'], '../' . $path)) {
+        $path = 'uploads/' . time() . $_FILES['img']['name'];
+        if (!move_uploaded_file($_FILES['img']['tmp_name'], '../' . $path)) {
             $response = [
                 "status" => false,
                 "type" => 2,
@@ -101,7 +71,7 @@ if ($_FILES['pasport']) {
             echo json_encode($response);
         }
 
-        if (mysqli_query($connect, "UPDATE `device` SET  `dev_name`='$name', `dev_marka`='$marka', `dev_zav_number`='$zav_number', `dev_data_release`='$dev_data_release', `dev_data_pred_poverki`='$dev_data_pred_poverki',  `dev_data_poverki`='$dev_data_poverki', `dev_img`='$path' WHERE `id`=$dev_id")) {
+        if (mysqli_query($connect, "UPDATE `device` SET  `dev_type`='$type',`dev_name`='$name',`dev_marka`='$marka',`zav_num`='$zav_number', `location`='$location3',  `img`='$path' WHERE `dev_id`=$dev_id")) {
 
 
 
@@ -134,7 +104,7 @@ if ($_FILES['pasport']) {
     }
 } else {
 
-    if (mysqli_query($connect, "UPDATE `device` SET  `dev_name`='$name', `dev_marka`='$marka', `dev_zav_number`='$zav_number', `dev_data_release`='$dev_data_release', `dev_data_pred_poverki`='$dev_data_pred_poverki',  `dev_data_poverki`='$dev_data_poverki' WHERE `id`=$dev_id")) {
+    if (mysqli_query($connect, "UPDATE `device` SET `dev_type`='$type',`dev_name`='$name',`dev_marka`='$marka',`zav_num`='$zav_number', `location`='$location3' WHERE `dev_id`=$dev_id")) {
 
 
 
@@ -149,7 +119,7 @@ if ($_FILES['pasport']) {
         $response = [
             "status" => false,
             "type" => 2,
-            "message" => "Данные некорректны",
+            "message" => $location3,
         ];
         echo json_encode($response);
     }

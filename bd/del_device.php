@@ -6,7 +6,7 @@ $dev_id = $_POST['dev_id'];
 
 
 if (
-    mysqli_query($connect, "DELETE FROM `device` WHERE `device`.`id` = '$dev_id'")
+    mysqli_query($connect, "DELETE FROM `device` WHERE `device`.`dev_id` = '$dev_id'")
 
 ) {
 

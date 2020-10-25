@@ -2,36 +2,25 @@
 session_start();
 require_once '../vendor/connect.php';
 unset($_SESSION["sql"]["sql"]);
+$type = $_POST['type'];
 $name = $_POST['name'];
 $marka = $_POST['marka'];
 $zav_number = $_POST['zav_number'];
-$dev_data_release_start = $_POST['dev_data_release_start'];
-$dev_data_release_end = $_POST['dev_data_release_end'];
-$dev_data_pred_poverki_start = $_POST['dev_data_pred_poverki_start'];
-$dev_data_pred_poverki_end = $_POST['dev_data_pred_poverki_end'];
-$dev_data_poverki_start = $_POST['dev_data_poverki_start'];
-$dev_data_poverki_end = $_POST['dev_data_poverki_end'];
-$fif = $_POST['fif'];
-$prikaz = $_POST['prikaz'];
-$to = $_POST['to'];
+$location2 = $_POST['location2'];
+
 
 $distr_name = $_POST['distr_name'];
 
 
 $_SESSION['form_select'] = [
     "distr_name" => $distr_name,
+    "type" => $type,
     "name" => $name,
-    "fif" => $fif,
-    "prikaz" => $prikaz,
-    "to" => $to,
     "marka" => $marka,
     "zav_number" => $zav_number,
-    "dev_data_release_start" => $dev_data_release_start,
-    "dev_data_release_end" => $dev_data_release_end,
-    "dev_data_pred_poverki_start" => $dev_data_pred_poverki_start,
-    "dev_data_pred_poverki_end" => $dev_data_pred_poverki_end,
-    "dev_data_poverki_start" => $dev_data_poverki_start,
-    "dev_data_poverki_end" => $dev_data_poverki_end,
+    "location2" => $location2,
+
+
 
 ];
 
@@ -58,7 +47,7 @@ $search = explode(' ', $_POST['distr_name']);
 
 //если оно есть
 if (!empty($_POST['distr_name'])) {
-    $where = " users.distr_id=device.dist_id AND (";
+    $where = " users.id=device.distr_id AND (";
     if (count($search) === 1) {
         //  если оно одно 
         $where .= addWhere($where, " users.distr LIKE '%" . htmlspecialchars($search[0]), false, true) . "%'";
@@ -77,13 +66,43 @@ if (!empty($_POST['distr_name'])) {
 }
 
 
+// Принимаем тип
+$search = explode(' ', $_POST['type']);
 
-// Принимаем ИМЯ
+
+//если оно есть
+if (!empty($_POST['type'])) {
+    // и если имя есть
+    if ($where) {
+        $where .= "AND (";
+    } else $where = "(";
+
+    if (count($search) === 1) {
+        //  если оно одно 
+        $where .= addWhere($where, "`dev_type` LIKE '%" . htmlspecialchars($search[0]), false, true) . "%'";
+        $where .= ")";
+    } else {
+        // если их несколько
+        $where .= addWhere($where, "`dev_type` LIKE '%" . htmlspecialchars($search[0]), false, true) . "%'";
+        unset($search[0]);
+        foreach ($search as $name) {
+
+            $where = addWhere($where, "`dev_type` LIKE '%" . htmlspecialchars($name), false) . "%'";
+        }
+
+        $where .= ")";
+    }
+}
+
+// Принимаем имя
+
+
 $search = explode(' ', $_POST['name']);
 
 
 //если оно есть
 if (!empty($_POST['name'])) {
+    // и если имя есть
     if ($where) {
         $where .= "AND (";
     } else $where = "(";
@@ -104,8 +123,7 @@ if (!empty($_POST['name'])) {
         $where .= ")";
     }
 }
-
-// Принимаем марку
+// Принимаем модель
 
 
 $search = explode(' ', $_POST['marka']);
@@ -142,151 +160,18 @@ if (!empty($_POST['zav_number'])) {
         $where .= "AND (";
     } else $where = "(";
 
-    $where .= addWhere($where, "`dev_zav_number` LIKE '%" . htmlspecialchars($zav_number), false, true) . "%'";
+    $where .= addWhere($where, "`zav_num` LIKE '%" . htmlspecialchars($zav_number), false, true) . "%'";
 
     $where .= ")";
 }
-
-// принимаем год выпуска
-
-if ($dev_data_release_start && $dev_data_release_end) {
+// Принимаем место установки
+if (!empty($_POST['location2'])) {
 
     if ($where) {
         $where .= "AND (";
     } else $where = "(";
 
-    $where .= addWhere($where, "YEAR(dev_data_release) BETWEEN " . htmlspecialchars($dev_data_release_start) . " AND " . htmlspecialchars($dev_data_release_end), false, true) . "";
-
-    $where .= ")";
-} else {
-
-    if ($dev_data_release_start) {
-
-        if ($where) {
-            $where .= "AND (";
-        } else $where = "(";
-
-        $where .= addWhere($where, "YEAR(dev_data_release) >= " . htmlspecialchars($dev_data_release_start), false, true) . "";
-
-        $where .= ")";
-    }
-
-    if ($dev_data_release_end) {
-
-        if ($where) {
-            $where .= "AND (";
-        } else $where = "(";
-
-        $where .= addWhere($where, "YEAR(dev_data_release) <= " . htmlspecialchars($dev_data_release_end), false, true) . "";
-
-        $where .= ")";
-    }
-}
-
-// принимаем дату поверки
-
-if ($dev_data_pred_poverki_start && $dev_data_pred_poverki_end) {
-
-    if ($where) {
-        $where .= "AND (";
-    } else $where = "(";
-
-    $where .= addWhere($where, "dev_data_pred_poverki  BETWEEN '" . htmlspecialchars($dev_data_pred_poverki_start) . "' AND '" . htmlspecialchars($dev_data_pred_poverki_end), false, true) . "'";
-
-    $where .= ")";
-} else {
-
-    if ($dev_data_pred_poverki_start) {
-
-        if ($where) {
-            $where .= "AND (";
-        } else $where = "(";
-
-        $where .= addWhere($where, "dev_data_pred_poverki>= '" . htmlspecialchars($dev_data_pred_poverki_start), false, true) . "'";
-
-        $where .= ")";
-    }
-
-    if ($dev_data_pred_poverki_end) {
-
-        if ($where) {
-            $where .= "AND (";
-        } else $where = "(";
-
-        $where .= addWhere($where, "dev_data_pred_poverki <= '" . htmlspecialchars($dev_data_pred_poverki_end), false, true) . "'";
-
-        $where .= ")";
-    }
-}
-
-// принимаем дату следующей  поверки
-
-if ($dev_data_poverki_start && $dev_data_poverki_end) {
-
-    if ($where) {
-        $where .= "AND (";
-    } else $where = "(";
-
-    $where .= addWhere($where, "dev_data_poverki  BETWEEN '" . htmlspecialchars($dev_data_poverki_start) . "' AND '" . htmlspecialchars($dev_data_poverki_end), false, true) . "'";
-
-    $where .= ")";
-} else {
-
-    if ($dev_data_poverki_start) {
-
-        if ($where) {
-            $where .= "AND (";
-        } else $where = "(";
-
-        $where .= addWhere($where, "dev_data_poverki >= '" . htmlspecialchars($dev_data_poverki_start), false, true) . "'";
-
-        $where .= ")";
-    }
-
-    if ($dev_data_poverki_end) {
-
-        if ($where) {
-            $where .= "AND (";
-        } else $where = "(";
-
-        $where .= addWhere($where, "dev_data_poverki <= '" . htmlspecialchars($dev_data_poverki_end), false, true) . "'";
-
-        $where .= ")";
-    }
-}
-
-// Принимаем fif
-if (!empty($_POST['fif'])) {
-
-    if ($where) {
-        $where .= "AND (";
-    } else $where = "(";
-
-    $where .= addWhere($where, "`fif` LIKE '%" . htmlspecialchars($fif), false, true) . "%'";
-
-    $where .= ")";
-}
-
-// Принимаем приказ
-if (!empty($_POST['prikaz'])) {
-
-    if ($where) {
-        $where .= "AND (";
-    } else $where = "(";
-
-    $where .= addWhere($where, "`prikaz` LIKE '%" . htmlspecialchars($prikaz), false, true) . "%'";
-
-    $where .= ")";
-}
-
-// Принимаем то
-if (!empty($_POST['to'])) {
-
-    if ($where) {
-        $where .= "AND (";
-    } else $where = "(";
-
-    $where .= addWhere($where, "`tex_o` LIKE '%" . htmlspecialchars($to), false, true) . "%'";
+    $where .= addWhere($where, "`location` LIKE '%" . htmlspecialchars($location2), false, true) . "%'";
 
     $where .= ")";
 }
@@ -300,7 +185,7 @@ if (!empty($_POST['to'])) {
 
 
 
-$sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_release`, `dev_data_pred_poverki`, `dev_data_poverki`, `dev_img` , `status`, `dev_akt_img`,`fif`,`prikaz`,`tex_o`,`dist_id` FROM `device`, `users` WHERE ";
+$sql = "SELECT DISTINCT `dev_id`, `dev_type`,`dev_name`,`dev_marka`,`zav_num`, `location`, `img`, `akt`,`status`,`distr_id` FROM `device`, `users` WHERE ";
 if ($where) {
     $sql .= "$where";
     $_SESSION['sql'] = [
@@ -310,7 +195,7 @@ if ($where) {
 } else {
 
     $_SESSION['sql'] = [
-        "sql" =>  "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_release`, `dev_data_pred_poverki`, `dev_data_poverki`, `dev_img` , `status`, `dev_akt_img`,`fif`,`prikaz`,`tex_o`,`dist_id` FROM `device`, `users`",
+        "sql" =>  "SELECT DISTINCT `dev_id`, `dev_type`,`dev_name`,`dev_marka`,`zav_num`, `location`, `img`, `akt`,`status`,`distr_id` FROM `device`, `users`",
         "btn" => false,
     ];
 }

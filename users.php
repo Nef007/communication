@@ -95,7 +95,7 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                         <?php
 
 
-                        $sql = "SELECT `first_name`,`last_name`,`patronymic`,`distr`,`login`,`password`,`access`, `distr_id`  FROM `users` ";
+                        $sql = "SELECT `first_name`,`last_name`,`patronymic`,`distr`,`login`,`password`,`access`, `id`  FROM `users` ";
 
 
 

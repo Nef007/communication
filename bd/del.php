@@ -6,7 +6,7 @@ $dev_id = $_POST['dev_id'];
 $href = $_POST['href'];
 
 if (
-    mysqli_query($connect, "UPDATE `device` SET  `dev_img`=null WHERE `id`=$dev_id") &&
+    mysqli_query($connect, "UPDATE `device` SET  `img`=null WHERE `dev_id`=$dev_id") &&
     unlink("../$href")
 ) {
 

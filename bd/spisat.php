@@ -3,7 +3,7 @@ session_start();
 require_once '../vendor/connect.php';
 $dev_id = $_POST['dev_id'];
 $status = $_POST['status'];
-$distr_id = $_SESSION['user']['distr_id'];
+
 
 
 
@@ -23,7 +23,7 @@ if ($_FILES['akt']) {
             echo json_encode($response);
         }
 
-        if (mysqli_query($connect, "UPDATE `device` SET  `status`='1', `dev_akt_img`='$path' WHERE `id`=$dev_id")) {
+        if (mysqli_query($connect, "UPDATE `device` SET  `status`='1', `akt`='$path' WHERE `dev_id`=$dev_id")) {
 
 
 

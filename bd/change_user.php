@@ -81,7 +81,7 @@ if (!empty($error_fields)) {
 
 
 
-if (mysqli_query($connect, "UPDATE `users` SET  `first_name`='$first_name', `last_name`='$last_name', `patronymic`='$patronymic', `distr`='$distr', `password`='$password', `login`='$login', `access`='$access' WHERE `distr_id`='$distr_id' ")) {
+if (mysqli_query($connect, "UPDATE `users` SET  `first_name`='$first_name', `last_name`='$last_name', `patronymic`='$patronymic', `distr`='$distr', `password`='$password', `login`='$login', `access`='$access' WHERE `id`='$distr_id' ")) {
 
 
 

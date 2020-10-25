@@ -82,16 +82,13 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                     <table id="tableexl">
                         <thead>
                             <tr>
+                                <th>Тип</th>
                                 <th>Наименование</th>
-                                <th>Тип,марка</th>
+                                <th>Модель</th>
                                 <th>Заводской номер</th>
-                                <th class="noExl">Паспорт</th>
-                                <th>Год выпуска</th>
-                                <th>Дата поверки</th>
-                                <th>Дата след. поверки</th>
-                                <th>ФИФ</th>
-                                <th>Приказ</th>
-                                <th>ТО</th>
+
+                                <th>Место установки</th>
+                                <th class="noExl">Фото</th>
 
 
                             </tr>
@@ -102,11 +99,11 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                         <?php
 
                         if (empty($_SESSION['sql']['sql'])) {
-                            $sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_release`, `dev_data_pred_poverki`, `dev_data_poverki`, `dev_img` , `status`, `dev_akt_img`,`fif`,`prikaz`,`tex_o`,`dist_id` FROM `device`, `users`";
-                            $sql2 = "SELECT DISTINCT `distr_id`,`distr`,`access` FROM `users`";
+                            $sql = "SELECT DISTINCT `dev_id`, `dev_type`,`dev_name`,`dev_marka`,`zav_num`, `location`, `img`, `akt`,`status`,`distr_id` FROM `device`, `users`";
+                            $sql2 = "SELECT DISTINCT `id`,`distr`,`access` FROM `users`";
                         } else {
                             $sql = $_SESSION['sql']['sql'];
-                            $sql2 = "SELECT DISTINCT `distr_id`,`distr`,`access` FROM `users`";
+                            $sql2 = "SELECT DISTINCT `id`,`distr`,`access` FROM `users`";
                         }
                         $devices = mysqli_query($connect,  $sql);
                         $devices = mysqli_fetch_all($devices);
@@ -142,47 +139,37 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                         <?php
                                 foreach ($devices as $device) {
 
-                                    if ($device[13] == $user[0]) {
+                                    if ($device[9] == $user[0]) {
                                         // getExtension  подключенная функция
-                                        if (!empty($device[7]) && getExtension($device[7]) === "pdf") {
-                                            $img = $device[7];
-                                            $device[7] = '<a href="' . $img  . '" target="_blank"> <img src="assets\img\pdf.png" width="50" alt=""></a>';
-                                        } elseif (!empty($device[7]) && (getExtension($device[7]) === "jpg" || getExtension($device[7]) === "png")) {
-                                            $img = $device[7];
-                                            $device[7] = '<a href="' . $device[7] . '" target="_blank"> <img src="assets\img\jpg.png" width="50" alt=""></a>';
+                                        if (!empty($device[6]) && getExtension($device[6]) === "pdf") {
+                                            $img = $device[6];
+                                            $device[6] = '<a href="' . $img  . '" target="_blank"> <img src="assets\img\pdf.png" width="50" alt=""></a>';
+                                        } elseif (!empty($device[6]) && (getExtension($device[6]) === "jpg" || getExtension($device[6]) === "png")) {
+                                            $img = $device[6];
+                                            $device[6] = '<a href="' . $device[6] . '" target="_blank"> <img src="assets\img\jpg.png" width="50" alt=""></a>';
                                         } else $img = "1";
 
 
 
-                                        if (date('Y-m-d') >= $device[6] && $device[8] == "1") {
-                                            echo '<tr id="tbody" class="eloy">';
-                                        } elseif (date('Y-m-d') >= $device[6]) {
-                                            echo '<tr id="tbody" class="red">';
-                                        } elseif ($device[8] == "1") {
-                                            echo '<tr id="tbody" class="eloy">';
-                                        } else {
-                                            echo '<tr id="tbody">';
-                                        }
 
 
                                         echo '  
-                                 <td class="td-max" style="cursor: pointer;">' . $device[1] . '</td>
-                                    <td>' . $device[2] . '</td>
-                                    <td>' . $device[3] . '</td>
-                                    <td class="td-min noExl"> ' . $device[7] . '</td>
-                                    <td>' . $device[4] . '</td>
-                                    <td>' . $device[5] . '</td>
-                                    <td>' . $device[6] . '</td>
-                                    <td class="col_id noExl">' . $device[0] . '</td>
-                                    <td class="col_id noExl">' . $img . '</td>
-                                    <td class="col_id noExl">' . $device[8] . '</td>
-                                    <td class="col_id noExl">' . $device[9] . '</td>
-                                    <td class="td-min">' . $device[10] . '</td>
-                                    <td class="td-min">' . $device[11] . '</td>
-                                    <td class="td-min">' . $device[12] . '</td>
-
-
-                                   </tr>
+                                      
+                            <tr id="tbody">
+                                    
+                            <td style="cursor: pointer;">' . $device[1] . '</td>
+                            <td>' . $device[2] . '</td>
+                            <td>' . $device[3] . '</td>
+                            <td>' . $device[4] . '</td>
+                            <td>' . $device[5] . '</td>
+                            <td class="noExl">' . $device[6] . '</td>
+                            <td class="col_id noExl">' . $device[0] . '</td>
+                            <td class="col_id noExl">' . $device[7] . '</td>
+                            <td class="col_id noExl">' . $device[8] . '</td>
+                            <td class="col_id noExl">' . $img . '</td>
+                          
+                          
+                           </tr>
                                 ';
                                     }
                                 }
@@ -228,35 +215,34 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
 
                         </div>
                         <div>
-                            <label>Наименование:</label> <input type="text" name="name" />
-                        </div>
-                        <div>
-                            <label>Тип,марка:</label> <input type="text" name="marka" />
-                        </div>
-                        <div>
-                            <label>Заводской №:</label> <input type="text" name="zav_number" />
-                        </div>
-                        <div>
-                            <label>Паспорт:</label> <input type="file" name="pasport" />
-                        </div>
-                        <div>
-                            <label>Год выпуска:</label> <input type="date" name="dev_data_release" />
-                        </div>
-                        <div>
-                            <label>Дата поверки:</label> <input type="date" name="dev_data_pred_poverki" />
-                        </div>
-                        <div>
-                            <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki" />
-                        </div>
+                            <div>
+                                <label>Тип:</label> <input type="text" name="type" />
+                            </div>
+                            <div>
+                                <label>Наименование:</label> <input type="text" name="name" />
+                            </div>
+                            <div>
+                                <label>Модель:</label> <input type="text" name="marka" />
+                            </div>
+                            <div>
+                                <label>Заводской номер:</label> <input type="text" name="zav_number" />
+                            </div>
+                            <div>
+                                <label>Место установки:</label> <input type="text" name="location1" />
+                            </div>
+                            <div>
+                                <label>Фото:</label> <input type="file" name="img" />
+                            </div>
 
 
-                        <div class="popup-add-subbtn">
-                            <input type="submit" class="add-btn-adm" value="Добавить" />
-                        </div>
-                        <div class="popup-add-msg">
-                            <p class="gifload  none"></p>
-                            <p class="msg  none">LOrem</p>
-                        </div>
+
+                            <div class="popup-add-subbtn">
+                                <input type="submit" class="add-btn-adm" value="Добавить" />
+                            </div>
+                            <div class="popup-add-msg">
+                                <p class="gifload  none"></p>
+                                <p class="msg  none">LOrem</p>
+                            </div>
                     </form>
                 </div>
             </div>
@@ -282,39 +268,19 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                             <label>Принадлежность:</label> <input type="text" name="distr_name" value="<?php if ($_SESSION['form_select']['distr_name']) { ?><?= $_SESSION['form_select']['distr_name'] ?><?php } ?>" />
                         </div>
                         <div>
+                            <label>Тип:</label> <input type="text" name="type2" value="<?php if ($_SESSION['form_select']['type']) { ?><?= $_SESSION['form_select']['type'] ?><?php } ?>" />
+                        </div>
+                        <div>
                             <label>Наименование:</label> <input type="text" name="name2" value="<?php if ($_SESSION['form_select']['name']) { ?><?= $_SESSION['form_select']['name'] ?><?php } ?>" />
                         </div>
                         <div>
-                            <label>Тип,марка:</label> <input type="text" name="marka2" value="<?php if ($_SESSION['form_select']['marka']) { ?><?= $_SESSION['form_select']['marka'] ?><?php } ?>" />
+                            <label>Модель:</label> <input type="text" name="marka2" value="<?php if ($_SESSION['form_select']['marka']) { ?><?= $_SESSION['form_select']['marka'] ?><?php } ?>" />
                         </div>
                         <div>
-                            <label>Заводской №:</label> <input type="text" name="zav_number2" value="<?php if ($_SESSION['form_select']['zav_number']) { ?><?= $_SESSION['form_select']['zav_number'] ?><?php } ?>" />
-                        </div>
-
-                        <div>
-                            <label>Год выпуска: </label>
-
-                            c<input class="input-min" type="number" min="1900" max="2099" step="1" name="dev_data_release2_start" value="<?php if ($_SESSION['form_select']['dev_data_release_start']) { ?><?= $_SESSION['form_select']['dev_data_release_start'] ?><?php } ?>" />по
-                            <input class="input-min" type="number" min="1900" max="2099" step="1" name="dev_data_release2_end" value="<?php if ($_SESSION['form_select']['dev_data_release_end']) { ?><?= $_SESSION['form_select']['dev_data_release_end'] ?><?php } ?>" />
-
-
+                            <label>Заводской номер:</label> <input type="text" name="zav_number2" value="<?php if ($_SESSION['form_select']['zav_number']) { ?><?= $_SESSION['form_select']['zav_number'] ?><?php } ?>" />
                         </div>
                         <div>
-                            <label>Дата поверки:</label> с<input class="input-min" type="date" name="dev_data_pred_poverki2_start" value="<?php if ($_SESSION['form_select']['dev_data_pred_poverki_start']) { ?><?= $_SESSION['form_select']['dev_data_pred_poverki_start'] ?><?php } ?>" />по
-                            <input class="input-min" type="date" name="dev_data_pred_poverki2_end" value="<?php if ($_SESSION['form_select']['dev_data_pred_poverki_end']) { ?><?= $_SESSION['form_select']['dev_data_pred_poverki_end'] ?><?php } ?>" />
-                        </div>
-                        <div>
-                            <label>Дата след. поверки:</label> с<input class="input-min" type="date" name="dev_data_poverki2_start" value="<?php if ($_SESSION['form_select']['dev_data_poverki_start']) { ?><?= $_SESSION['form_select']['dev_data_poverki_start'] ?><?php } ?>" />по
-                            <input class="input-min" type="date" name="dev_data_poverki2_end" value="<?php if ($_SESSION['form_select']['dev_data_poverki_end']) { ?><?= $_SESSION['form_select']['dev_data_poverki_end'] ?><?php } ?>" />
-                        </div>
-                        <div>
-                            <label>ФИФ:</label> <input type="text" name="fif2" value="<?php if ($_SESSION['form_select']['fif']) { ?><?= $_SESSION['form_select']['fif'] ?><?php } ?>" />
-                        </div>
-                        <div>
-                            <label>Приказ:</label> <input type="text" name="prikaz2" value="<?php if ($_SESSION['form_select']['prikaz']) { ?><?= $_SESSION['form_select']['prikaz'] ?><?php } ?>" />
-                        </div>
-                        <div>
-                            <label>ТО:</label> <input type="text" name="to2" value="<?php if ($_SESSION['form_select']['to']) { ?><?= $_SESSION['form_select']['to'] ?><?php } ?>" />
+                            <label>Место установки:</label> <input type="text" name="location2" value="<?php if ($_SESSION['form_select']['location2']) { ?><?= $_SESSION['form_select']['location2'] ?><?php } ?>" />
                         </div>
                         <div class="popup-select-subbtn">
                             <input type="submit" class="select-btn-adm" value="Применить" />
@@ -366,20 +332,26 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                                 <input type="hidden" name="dev_id" id="dev_id" />
                             </div>
                             <div>
+                                <label>Тип:</label> <input type="text" name="type3" id="type" />
+                            </div>
+                            <div>
                                 <label>Наименование:</label> <input type="text" name="name3" id="name" />
                             </div>
                             <div>
-                                <label>Тип,марка:</label> <input type="text" name="marka3" id="marka" />
+                                <label>Модель:</label> <input type="text" name="marka3" id="marka" />
                             </div>
                             <div>
-                                <label>Заводской №:</label> <input type="text" name="zav_number3" id="zav_number" />
+                                <label>Заводской номер:</label> <input type="text" name="zav_number3" id="zav_number" />
                             </div>
                             <div>
-                                <label>Паспорт:</label>
+                                <label>Место установки:</label> <input type="text" name="location3" id="location2" />
+                            </div>
+                            <div>
+                                <label>Фото:</label>
 
 
 
-                                <input class="vibor" type="file" name="pasport" />
+                                <input class="vibor" type="file" name="img" />
                                 <div class="per"> <a id="seatch_bt" href="" target="_blank">
                                         <img src="assets\img\file.png" width="50"></a>
                                     <img class="del-btn" src="assets\img\del.png" width="20">
@@ -389,24 +361,6 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
 
 
 
-                            </div>
-                            <div>
-                                <label>Год выпуска:</label> <input type="date" name="dev_data_release3" id="dev_data_release3" />
-                            </div>
-                            <div>
-                                <label>Дата поверки:</label> <input type="date" name="dev_data_pred_poverki3" id="dev_data_pred_poverki3" />
-                            </div>
-                            <div>
-                                <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki3" id="dev_data_poverki3" />
-                            </div>
-                            <div>
-                                <label>ФИФ:</label> <input type="text" name="fif" id="fif" />
-                            </div>
-                            <div>
-                                <label>Приказ:</label> <input type="text" name="prikaz" id="prikaz" />
-                            </div>
-                            <div>
-                                <label>ТО:</label> <input type="text" name="to" id="to" />
                             </div>
                             <div class="popup-add-subbtn">
                                 <input type="submit" class="change-btn-adm" value="Сохранить" />
@@ -488,32 +442,23 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                 $(".msg").addClass("none");
                 $(`input`).removeClass("error");
 
-                let name = $(this).children('td:first-child').text();
-                let marka = $(this).children('td:nth-child(2)').text();
-                let zav_number = $(this).children('td:nth-child(3)').text();
-
-                let dev_data_release3 = $(this).children('td:nth-child(5)').text();
-                let dev_data_pred_poverki3 = $(this).children('td:nth-child(6)').text();
-                let dev_data_poverki3 = $(this).children('td:nth-child(7)').text();
-                let dev_id = $(this).children('td:nth-child(8)').text();
-                pasport = $(this).children('td:nth-child(9)').text();
-                let $status = $(this).children('td:nth-child(10)').text();
-                let akt = $(this).children('td:nth-child(11)').text();
-                let fif = $(this).children('td:nth-child(12)').text();
-                let prikaz = $(this).children('td:nth-child(13)').text();
-                let to = $(this).children('td:nth-child(14)').text();
+                let type = $(this).children('td:first-child').text();
+                let name = $(this).children('td:nth-child(2)').text();
+                let marka = $(this).children('td:nth-child(3)').text();
+                let zav_number = $(this).children('td:nth-child(4)').text();
+                let location2 = $(this).children('td:nth-child(5)').text();
+                let dev_id = $(this).children('td:nth-child(7)').text();
+                pasport = $(this).children('td:nth-child(10)').text();
+                let status = $(this).children('td:nth-child(9)').text();
+                let akt = $(this).children('td:nth-child(8)').text();
+                $('#type').val(type);
                 $('#name').val(name);
                 $('#marka').val(marka);
+
                 $('#zav_number').val(zav_number);
-                $('#pasport').val(pasport);
-                $('#dev_data_release3').val(dev_data_release3);
-                $('#dev_data_pred_poverki3').val(dev_data_pred_poverki3);
-                $('#dev_data_poverki3').val(dev_data_poverki3);
+                $('#location2').val(location2);
                 $('#dev_id').val(dev_id);
-                $('#fif').val(fif);
-                $('#prikaz').val(prikaz);
-                $('#to').val(to);
-                $('#status').val(getstringstatus($status));
+                $('#status').val(getstringstatus(status));
 
 
                 function getstringstatus($num) {

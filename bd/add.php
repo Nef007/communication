@@ -144,7 +144,7 @@ VALUES (NULL, '$distr_id', '$type', '$name', '$marka', '$zav_number', '$location
         $response = [
             "status" => false,
             "type" => 2,
-            "message" => $type,
+            "message" => "Данные некорректны",
         ];
         echo json_encode($response);
     }

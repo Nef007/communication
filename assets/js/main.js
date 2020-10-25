@@ -109,24 +109,22 @@ $(".add-btn-adm").click(function (e) {
 
   $(`input`).removeClass("error");
 
-  let name = $('input[name="name"]').val(),
+  let dist_id = $('select[name="dist_id"]').val(),
+    type = $('input[name="type"]').val(),
+    name = $('input[name="name"]').val(),
     marka = $('input[name="marka"]').val(),
-    zav_number = $('input[name="zav_number"]').val(),
-    dist_id = $('select[name="dist_id"]').val(),
-    dev_data_release = $('input[name="dev_data_release"]').val();
-  dev_data_pred_poverki = $('input[name="dev_data_pred_poverki"]').val();
-  dev_data_poverki = $('input[name="dev_data_poverki"]').val();
+    zav_number = $('input[name="zav_number"]').val();
+  location1 = $('input[name="location1"]').val();
 
   let formData = new FormData();
 
-  formData.append("dist_id", dist_id);
+  formData.append("id", dist_id);
+  formData.append("type", type);
   formData.append("name", name);
   formData.append("marka", marka);
   formData.append("zav_number", zav_number);
-  formData.append("pasport", pasport);
-  formData.append("dev_data_release", dev_data_release);
-  formData.append("dev_data_pred_poverki", dev_data_pred_poverki);
-  formData.append("dev_data_poverki", dev_data_poverki);
+  formData.append("location1", location1);
+  formData.append("img", img);
 
   $.ajax({
     url: "bd/add.php",
@@ -162,30 +160,18 @@ $(".select-btn").click(function (e) {
 
   $(`input`).removeClass("error");
 
-  let name = $('input[name="name2"]').val(),
+  let type = $('input[name="type2"]').val(),
+    name = $('input[name="name2"]').val(),
     marka = $('input[name="marka2"]').val(),
-    zav_number = $('input[name="zav_number2"]').val(),
-    dev_data_release_start = $('input[name="dev_data_release2_start"]').val();
-  dev_data_release_end = $('input[name="dev_data_release2_end"]').val();
-  dev_data_pred_poverki_start = $(
-    'input[name="dev_data_pred_poverki2_start"]'
-  ).val();
-  dev_data_pred_poverki_end = $(
-    'input[name="dev_data_pred_poverki2_end"]'
-  ).val();
-  dev_data_poverki_start = $('input[name="dev_data_poverki2_start"]').val();
-  dev_data_poverki_end = $('input[name="dev_data_poverki2_end"]').val();
+    zav_number = $('input[name="zav_number2"]').val();
+  location2 = $('input[name="location2"]').val();
 
   let formData = new FormData();
+  formData.append("type", type);
   formData.append("name", name);
   formData.append("marka", marka);
   formData.append("zav_number", zav_number);
-  formData.append("dev_data_release_start", dev_data_release_start);
-  formData.append("dev_data_release_end", dev_data_release_end);
-  formData.append("dev_data_pred_poverki_start", dev_data_pred_poverki_start);
-  formData.append("dev_data_pred_poverki_end", dev_data_pred_poverki_end);
-  formData.append("dev_data_poverki_start", dev_data_poverki_start);
-  formData.append("dev_data_poverki_end", dev_data_poverki_end);
+  formData.append("location2", location2);
 
   $.ajax({
     url: "bd/select.php",
@@ -222,38 +208,20 @@ $(".select-btn-adm").click(function (e) {
 
   $(`input`).removeClass("error");
 
-  let name = $('input[name="name2"]').val(),
+  let type = $('input[name="type2"]').val(),
+    name = $('input[name="name2"]').val(),
     marka = $('input[name="marka2"]').val(),
-    fif = $('input[name="fif2"]').val(),
-    prikaz = $('input[name="prikaz2"]').val(),
-    to = $('input[name="to2"]').val(),
-    distr_name = $('input[name="distr_name"]').val(),
-    zav_number = $('input[name="zav_number2"]').val(),
-    dev_data_release_start = $('input[name="dev_data_release2_start"]').val();
-  dev_data_release_end = $('input[name="dev_data_release2_end"]').val();
-  dev_data_pred_poverki_start = $(
-    'input[name="dev_data_pred_poverki2_start"]'
-  ).val();
-  dev_data_pred_poverki_end = $(
-    'input[name="dev_data_pred_poverki2_end"]'
-  ).val();
-  dev_data_poverki_start = $('input[name="dev_data_poverki2_start"]').val();
-  dev_data_poverki_end = $('input[name="dev_data_poverki2_end"]').val();
+    zav_number = $('input[name="zav_number2"]').val();
+  location2 = $('input[name="location2"]').val();
+  distr_name = $('input[name="distr_name"]').val();
 
   let formData = new FormData();
+  formData.append("type", type);
   formData.append("name", name);
-  formData.append("fif", fif);
-  formData.append("prikaz", prikaz);
-  formData.append("to", to);
   formData.append("marka", marka);
-  formData.append("distr_name", distr_name);
   formData.append("zav_number", zav_number);
-  formData.append("dev_data_release_start", dev_data_release_start);
-  formData.append("dev_data_release_end", dev_data_release_end);
-  formData.append("dev_data_pred_poverki_start", dev_data_pred_poverki_start);
-  formData.append("dev_data_pred_poverki_end", dev_data_pred_poverki_end);
-  formData.append("dev_data_poverki_start", dev_data_poverki_start);
-  formData.append("dev_data_poverki_end", dev_data_poverki_end);
+  formData.append("location2", location2);
+  formData.append("distr_name", distr_name);
 
   $.ajax({
     url: "bd/select_adm.php",
@@ -346,23 +314,22 @@ $(".change-btn").click(function (e) {
 
   $(`input`).removeClass("error");
 
-  let name = $('input[name="name3"]').val(),
+  let type = $('input[name="type3"]').val(),
     dev_id = $('input[name="dev_id"]').val(),
+    name = $('input[name="name3"]').val(),
     marka = $('input[name="marka3"]').val(),
-    zav_number = $('input[name="zav_number3"]').val(),
-    dev_data_release = $('input[name="dev_data_release3"]').val();
-  dev_data_pred_poverki = $('input[name="dev_data_pred_poverki3"]').val();
+    zav_number = $('input[name="zav_number3"]').val();
+  location3 = $('input[name="location3"]').val();
   dev_data_poverki = $('input[name="dev_data_poverki3"]').val();
 
   let formData = new FormData();
   formData.append("dev_id", dev_id);
+  formData.append("type", type);
   formData.append("name", name);
   formData.append("marka", marka);
+  formData.append("img", img);
   formData.append("zav_number", zav_number);
-  formData.append("pasport", pasport);
-  formData.append("dev_data_release", dev_data_release);
-  formData.append("dev_data_pred_poverki", dev_data_pred_poverki);
-  formData.append("dev_data_poverki", dev_data_poverki);
+  formData.append("location3", location3);
 
   $.ajax({
     url: "../../bd/change.php",
@@ -481,7 +448,7 @@ $(".spisat-btn").click(function (e) {
 
 // удаление акта списания
 
-$(".del-btn").click(function (e) {
+$(".del-btn-akt").click(function (e) {
   e.preventDefault();
 
   $(`input`).removeClass("error");
@@ -707,29 +674,23 @@ $(".change-btn-adm").click(function (e) {
 
   $(`input`).removeClass("error");
 
-  let name = $('input[name="name3"]').val(),
+ 
+  let type = $('input[name="type3"]').val(),
     dev_id = $('input[name="dev_id"]').val(),
-    fif = $('input[name="fif"]').val(),
-    prikaz = $('input[name="prikaz"]').val(),
-    to = $('input[name="to"]').val(),
+    name = $('input[name="name3"]').val(),
     marka = $('input[name="marka3"]').val(),
-    zav_number = $('input[name="zav_number3"]').val(),
-    dev_data_release = $('input[name="dev_data_release3"]').val();
-  dev_data_pred_poverki = $('input[name="dev_data_pred_poverki3"]').val();
+    zav_number = $('input[name="zav_number3"]').val();
+  location3 = $('input[name="location3"]').val();
   dev_data_poverki = $('input[name="dev_data_poverki3"]').val();
 
   let formData = new FormData();
   formData.append("dev_id", dev_id);
+  formData.append("type", type);
   formData.append("name", name);
   formData.append("marka", marka);
+  formData.append("img", img);
   formData.append("zav_number", zav_number);
-  formData.append("pasport", pasport);
-  formData.append("dev_data_release", dev_data_release);
-  formData.append("dev_data_pred_poverki", dev_data_pred_poverki);
-  formData.append("dev_data_poverki", dev_data_poverki);
-  formData.append("fif", fif);
-  formData.append("prikaz", prikaz);
-  formData.append("to", to);
+  formData.append("location3", location3);
 
   $.ajax({
     url: "../../bd/change_adm.php",

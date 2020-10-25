@@ -79,7 +79,7 @@ if (!empty($error_fields)) {
 
 
 
-if (mysqli_query($connect, "INSERT INTO `users` (`distr_id`, `first_name`, `last_name`, `patronymic`, `distr`, `password`, `login`, `access`)
+if (mysqli_query($connect, "INSERT INTO `users` (`id`, `first_name`, `last_name`, `patronymic`, `distr`, `password`, `login`, `access`)
          VALUES (NULL, '$first_name', '$last_name', '$patronymic', '$distr', '$password', '$login', '$access');")) {
 
 
