@@ -27,33 +27,32 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
     <header>
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 ">
+                <div class="right1 col-lg-12 ">
                     <h1>Статистика</h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-1 offset-lg-8 ">
+
+
+
                     <div class="logout">
                         <a href="admin.php">Главная</a>
                     </div>
-                </div>
-                <div class="col-lg-1">
+
+
                     <div class="logout">
                         <a href="statistics.php">Статистика</a>
                     </div>
-                </div>
-                <div class="col-lg-1">
+
+
                     <div class="logout">
                         <a href="users.php">Пользователи</a>
                     </div>
-                </div>
-                <div class="col-lg-1 ">
+
+
                     <div class="logout">
                         <a href="vendor/logout.php">Выход</a>
                     </div>
                 </div>
+
             </div>
-        </div>
     </header>
 
 

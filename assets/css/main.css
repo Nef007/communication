@@ -19,7 +19,12 @@ textarea:focus {
   max-width: 1400px;
 }
 /* Оформление шапки */
+.right1 {
+  text-align: right;
+}
 .logout {
+  margin-left: 1rem;
+  display: inline;
   text-align: right;
 }
 .logout a {

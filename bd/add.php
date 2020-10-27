@@ -43,23 +43,23 @@ if (mysqli_num_rows($check_zav_number) > 0) {
 $error_fields = [];
 
 
-if ($name === '') {
+if ($type === '') {
     $error_fields[] = 'type';
 }
 
-if ($marka === '') {
+if ($name === '') {
     $error_fields[] = 'name';
 }
 
-if ($zav_number === '') {
+if ($marka === '') {
     $error_fields[] = 'marka';
 }
 
-if ($dev_data_release === '') {
+if ($zav_number === '') {
     $error_fields[] = 'zav_number';
 }
 
-if ($dev_data_pred_poverki === '') {
+if ($location1 === '') {
     $error_fields[] = 'location1';
 }
 
